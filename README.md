@@ -9,29 +9,22 @@
 
 <hr>
 
-<h2>🪶 Latar Belakang</h2>
-<p align="justify">
-Google Play Store menyediakan ribuan ulasan pengguna yang mencerminkan opini,
-kepuasan, dan permasalahan terhadap suatu aplikasi. Namun, ketidakseimbangan
-distribusi sentimen (class imbalance) sering menjadi tantangan dalam analisis
-sentimen berbasis pembelajaran mesin.
-</p>
-
-<p align="justify">
-Oleh karena itu, proyek ini menerapkan pendekatan <b>Deep Learning</b> untuk melakukan
-<b>analisis sentimen otomatis</b>, sekaligus mengevaluasi pengaruh <i>class imbalance</i>
-dan teknik <i>oversampling</i> terhadap performa model.
+<h2>🪔 Latar Belakang</h2>
+<p>
+Ulasan pengguna pada aplikasi Play Store mengandung informasi penting mengenai
+kualitas aplikasi. Namun, jumlah data yang besar membuat analisis manual tidak
+efisien. Oleh karena itu, pendekatan <i>Deep Learning</i> digunakan untuk
+mengklasifikasikan sentimen ulasan menjadi <b>negatif</b>, <b>netral</b>,
+dan <b>positif</b>.
 </p>
 
 <hr>
 
 <h2>🗂️ Dataset dan Sumber Data</h2>
 <ul>
-  <li><b>Sumber data:</b> Google Play Store</li>
-  <li><b>Metode:</b> Web scraping mandiri menggunakan Python</li>
-  <li><b>Library:</b> <code>google-play-scraper</code></li>
-  <li><b>Total data:</b> ≥ 3.000 ulasan</li>
-  <li><b>Format:</b> CSV</li>
+  <li>Sumber data: Google Play Store</li>
+  <li>Metode pengambilan: Web Scraping</li>
+  <li>Total data awal: <b>2.622 ulasan</b></li>
 </ul>
 
 <h3>🧭 Skema Pelabelan Sentimen</h3>
@@ -76,112 +69,106 @@ secara lebih seimbang.
 
 <hr>
 
-<h2>⚙️ Model dan Skema Pelatihan</h2>
+<h2>🧬 Model dan Skema Pelatihan</h2>
 
-<table border="1" cellpadding="8" cellspacing="0">
-  <thead>
-    <tr>
-      <th>No</th>
-      <th>Model</th>
-      <th>Pembagian Data</th>
-      <th>Teknik Tambahan</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>LSTM</td>
-      <td>80% Train – 20% Test</td>
-      <td>Class Weight</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>CNN</td>
-      <td>80% Train – 20% Test</td>
-      <td>Oversampling</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>BiLSTM</td>
-      <td>70% Train – 30% Test</td>
-      <td>Bidirectional Layer</td>
-    </tr>
-  </tbody>
-</table>
+<h3>🔹 Skema 1 — CNN + Oversampling (Split 80/20)</h3>
+<ul>
+  <li>Arsitektur: Embedding → Conv1D → Conv1D → GlobalMaxPooling → Dense</li>
+  <li>Oversampling: Ya</li>
+  <li>Epoch: 12 (EarlyStopping)</li>
+  <li><b>Akurasi Testing: 0.8716</b></li>
+</ul>
+
+<h3>🔹 Skema 2 — CNN Baseline (Tanpa Oversampling, Split 80/20)</h3>
+<ul>
+  <li>Arsitektur CNN sederhana</li>
+  <li>Oversampling: Tidak</li>
+  <li>Epoch: 6</li>
+  <li><b>Akurasi Testing: 0.7943</b></li>
+</ul>
+
+<h3>🔹 Skema 3 — BiLSTM + Oversampling (Split 70/30)</h3>
+<ul>
+  <li>Arsitektur: Embedding → BiLSTM → Dense</li>
+  <li>Oversampling: Ya</li>
+  <li>Epoch: 6</li>
+  <li><b>Akurasi Testing: 0.8614</b></li>
+</ul>
 
 <hr>
 
-<h2>📈 Hasil dan Evaluasi Model</h2>
-
-<table border="1" cellpadding="8" cellspacing="0">
-  <thead>
-    <tr>
-      <th>Model</th>
-      <th>Accuracy Testing</th>
-      <th>Catatan</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>LSTM / CNN (tanpa oversampling)</td>
-      <td><b>85.41%</b></td>
-      <td>Memenuhi kriteria UAS</td>
-    </tr>
-    <tr>
-      <td>CNN (dengan oversampling)</td>
-      <td>≈ 79.6%</td>
-      <td>Distribusi kelas lebih seimbang</td>
-    </tr>
-    <tr>
-      <td>BiLSTM (70/30)</td>
-      <td>≈ 81.75%</td>
-      <td>Model pembanding</td>
-    </tr>
-  </tbody>
+<h2>📈 Perbandingan Hasil Akurasi</h2>
+<table border="1" cellpadding="6" cellspacing="0">
+  <tr>
+    <th>Skema</th>
+    <th>Model</th>
+    <th>Akurasi</th>
+  </tr>
+  <tr>
+    <td>Skema 1</td>
+    <td>CNN + Oversampling</td>
+    <td><b>0.8716</b></td>
+  </tr>
+  <tr>
+    <td>Skema 2</td>
+    <td>CNN Baseline</td>
+    <td>0.7943</td>
+  </tr>
+  <tr>
+    <td>Skema 3</td>
+    <td>BiLSTM + Oversampling</td>
+    <td>0.8614</td>
+  </tr>
 </table>
 
-<p align="justify">
-Hasil eksperimen menunjukkan bahwa meskipun oversampling berhasil memperbaiki
-ketidakseimbangan kelas, peningkatan performa model tidak selalu tercermin
-langsung pada nilai akurasi. Hal ini menunjukkan adanya trade-off antara
-keseimbangan data dan kemampuan generalisasi model.
+<p>
+<b>Model terbaik:</b> CNN dengan oversampling (Skema 1)
 </p>
 
 <hr>
 
-<h2>🧪 Inference / Prediksi Sentimen</h2>
-<pre>
-Input  : "Aplikasinya sangat membantu dan mudah digunakan"
-Output : Positif
-</pre>
+<h2>🔮 Inference / Prediksi Sentimen</h2>
+<p>Contoh hasil prediksi menggunakan model terbaik (CNN Skema 1):</p>
+
+<ul>
+  <li>
+    <b>Teks:</b> Aplikasinya bagus banget, fiturnya lengkap dan cepat<br>
+    <b>Prediksi:</b> Positif (Confidence: 0.9998)
+  </li>
+  <li>
+    <b>Teks:</b> Error terus, tidak bisa login, parah<br>
+    <b>Prediksi:</b> Negatif (Confidence: 0.944)
+  </li>
+  <li>
+    <b>Teks:</b> Lumayan sih, tapi masih sering lemot<br>
+    <b>Prediksi:</b> Negatif (Confidence: 0.7291)
+  </li>
+</ul>
 
 <hr>
 
 <h2>📂 Struktur Repository</h2>
 <pre>
 📁 UAS_Deep-Learning
-│
-├── 📁 data
+├── data
 │   ├── dataset_raw.csv
 │   ├── dataset_clean.csv
-├── scraping.ipynb 
-├── training.ipynb 
-├── requirements.txt
+│   └── .gitkeep
+├── 01_scrapping.ipynb
+├── 02_training.ipynb
 ├── README.md
-
+└── requirements.txt
 </pre>
 
 <hr>
 
-<h2>✅ Kesimpulan</h2>
-<p align="justify">
-Proyek ini berhasil memenuhi seluruh kriteria tugas UAS Deep Learning. Model
-Deep Learning mampu mengklasifikasikan sentimen ulasan dengan baik, serta
-menunjukkan bahwa penanganan ketidakseimbangan data merupakan aspek penting
-dalam analisis sentimen. Eksperimen ini memberikan dasar yang kuat untuk
-pengembangan lebih lanjut menggunakan model berbasis Transformer.
+<h2>🏁 Kesimpulan</h2>
+<p>
+Eksperimen menunjukkan bahwa penerapan <b>oversampling</b> secara signifikan
+meningkatkan performa model. CNN dengan oversampling menghasilkan akurasi
+tertinggi dan dipilih sebagai model terbaik untuk sistem analisis sentimen ini.
 </p>
 
 <p align="center">
-✨ <i>Disusun untuk memenuhi Ujian Akhir Semester (UAS) Mata Kuliah Deep Learning.</i>
+✨ <i>Proyek ini dibuat untuk memenuhi Ujian Akhir Semester (UAS) mata kuliah Deep Learning</i> ✨
 </p>
