@@ -1,5 +1,5 @@
 <h1 align="center">📊 Proyek UAS Deep Learning</h1>
-<h2 align="center">Analisis Sentimen Ulasan Google Play Store Menggunakan Deep Learning</h2>
+<h2 align="center">Analisis Sentimen Ulasan Pengguna Aplikasi E-Commerce di Google Play Store Menggunakan Metode Deep Learning (LSTM)</h2>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.9+-blue">
@@ -159,12 +159,16 @@ Output : Positif
 
 <h2>📂 Struktur Repository</h2>
 <pre>
-📁 uas-deep-learning
-│── README.md
-│── scraping_playstore.py
-│── training_model.ipynb
-│── dataset_playstore.csv
-│── requirements.txt
+📁 UAS_Deep-Learning
+│
+├── 📁 data
+│   ├── dataset_raw.csv
+│   ├── dataset_clean.csv
+├── scraping.ipynb 
+├── training.ipynb 
+├── requirements.txt
+├── README.md
+
 </pre>
 
 <hr>
